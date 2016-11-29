@@ -9,6 +9,7 @@ namespace TesteAnagrama
     class Program
     {
         public static string palavra;
+        public static List<string> palavrasAnagramas = new List<string>(); 
 
         /// <summary>
         /// Método incicial
@@ -16,17 +17,26 @@ namespace TesteAnagrama
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //Console.SetWindowSize(Console.LargestWindowWidth,Console.LargestWindowHeight);
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Digite uma palavra para fazer o anagrama");
             palavra = Console.ReadLine();
+
             if (palavra != String.Empty && palavra.Length <= 9)
             {
                 List<char> lettersUsed = new List<char>();
                 List<char> lettersLeft = new List<char>(palavra);
                 Console.Clear();
-                Console.WriteLine("Lista de novas palavras: ");
+                Console.WriteLine("Lista de novas palavras - palavra digitada: " + palavra);
                 Console.WriteLine("");
                 RecursiveCount(lettersUsed, lettersLeft);
+
+                palavrasAnagramas.Sort();
+                
+                for(int i = 0; i < palavrasAnagramas.Count; i++)
+                {
+                    Console.Write(palavrasAnagramas[i] + " ");
+                }  
                 Console.ReadKey();
             }
             else
@@ -46,7 +56,11 @@ namespace TesteAnagrama
         {
             if (lettersUsed.Count == palavra.Length)
             {
-                Console.WriteLine(new string(lettersUsed.ToArray()));
+                if(!palavrasAnagramas.Contains(new string(lettersUsed.ToArray())))
+                {
+                    //Console.WriteLine(new string(lettersUsed.ToArray()));
+                    palavrasAnagramas.Add(new string(lettersUsed.ToArray()));
+                }
             }
             if (lettersLeft.Count() > 0)
             {
@@ -61,4 +75,4 @@ namespace TesteAnagrama
             }
         }
     }
-}
+}   
