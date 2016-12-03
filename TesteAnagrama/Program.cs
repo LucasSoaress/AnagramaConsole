@@ -9,6 +9,7 @@ namespace TesteAnagrama
     class Program
     {
         public static string palavra;
+        public static int numeroAnagramas;
         public static List<string> palavrasAnagramas = new List<string>(); 
 
         /// <summary>
@@ -17,9 +18,10 @@ namespace TesteAnagrama
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            //Console.SetWindowSize(Console.LargestWindowWidth,Console.LargestWindowHeight);
+            numeroAnagramas = 0;
+            Console.BufferHeight = Int16.MaxValue - 1;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Digite uma palavra para fazer o anagrama");
+            Console.WriteLine("Digite uma palavra para fazer o anagrama \n");
             palavra = Console.ReadLine();
 
             if (palavra != String.Empty && palavra.Length <= 9)
@@ -27,16 +29,10 @@ namespace TesteAnagrama
                 List<char> lettersUsed = new List<char>();
                 List<char> lettersLeft = new List<char>(palavra);
                 Console.Clear();
-                Console.WriteLine("Lista de novas palavras - palavra digitada: " + palavra);
-                Console.WriteLine("");
-                RecursiveCount(lettersUsed, lettersLeft);
-
-                palavrasAnagramas.Sort();
-                
-                for(int i = 0; i < palavrasAnagramas.Count; i++)
-                {
-                    Console.Write(palavrasAnagramas[i] + " ");
-                }  
+                Console.WriteLine("Lista de novas palavras - palavra digitada: " + palavra + "\n");
+                lettersLeft.Sort();
+                RecursiveCount(lettersUsed, lettersLeft);  
+                Console.WriteLine(" \n \n Numero de anagramas gerados = " + numeroAnagramas.ToString());
                 Console.ReadKey();
             }
             else
@@ -58,18 +54,21 @@ namespace TesteAnagrama
             {
                 if(!palavrasAnagramas.Contains(new string(lettersUsed.ToArray())))
                 {
-                    //Console.WriteLine(new string(lettersUsed.ToArray()));
+                    numeroAnagramas++;
                     palavrasAnagramas.Add(new string(lettersUsed.ToArray()));
+                    Console.WriteLine( "  " + numeroAnagramas.ToString() +"  " + new string(lettersUsed.ToArray()));
+                   //Console.Write(new string(lettersUsed.ToArray()) + "\t");
                 }
             }
+
             if (lettersLeft.Count() > 0)
             {
-                for (int index = 0; index < lettersLeft.Count(); index++)
+                for (int i = 0; i < lettersLeft.Count(); i++)
                 {
                     List<char> newLettersUsed = new List<char>(lettersUsed);
-                    newLettersUsed.Add(lettersLeft[index]);
+                    newLettersUsed.Add(lettersLeft[i]);
                     List<char> newLettersLeft = new List<char>(lettersLeft);
-                    newLettersLeft.RemoveAt(index);
+                    newLettersLeft.RemoveAt(i);
                     RecursiveCount(newLettersUsed, newLettersLeft);
                 }
             }
